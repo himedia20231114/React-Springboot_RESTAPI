@@ -20,10 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api ( tags = {" MemberController : 사용자 정보를 출력해주는 API Controller"})
 @RestController
 @RequestMapping("/user")
 public class MemberController {
+	
+	// API 문서 출력 URL : http://localhost:3000/swagger-ui/index.html
 
 	private final MemberService service;
 
@@ -31,6 +36,8 @@ public class MemberController {
 		this.service = service;
 	}
 
+	// ID 중복 체크 로직 처리 
+	@ApiOperation(value="checkIdDuplicate() : ID 중복체크를 하는 API")
 	@GetMapping
 	public ResponseEntity<?> checkIdDuplicate(@RequestParam String id) {
 		System.out.println("UserController checkIdDuplicate " + new Date());
@@ -39,6 +46,8 @@ public class MemberController {
 		return new ResponseEntity<>(status);
 	}
 
+	// 회원가입 
+	@ApiOperation(value="join() : 회원정보를 저장하는 API")
 	@PostMapping("/join")
 	public ResponseEntity<JoinResponse> join(@Valid @RequestBody JoinRequest req) {
 		System.out.println("UserController join " + new Date());
@@ -46,6 +55,8 @@ public class MemberController {
 		return ResponseEntity.ok(service.join(req));
 	}
 
+	// 회원 로그인 로직
+	@ApiOperation(value="login() : 로그인하는 API")
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest req) {
 		System.out.println("UserController login " + new Date());
